@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Pomodoraaa prototype</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=VT323&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#ffffff}a:hover{color:#dddddd}
+button{font-family:inherit;cursor:pointer}
+input{font-family:inherit}
+</style>
+</helmet>
+<div style="width: 1280px; height: 800px; position: relative; overflow: hidden; font-family: 'Inter', -apple-system, sans-serif; background: radial-gradient(circle at 18% 28%, #ff7a59 0, rgba(255,122,89,0) 42%), radial-gradient(circle at 82% 18%, #7b5cff 0, rgba(123,92,255,0) 48%), radial-gradient(circle at 58% 88%, #1fb5ff 0, rgba(31,181,255,0) 44%), #1b1530">
+
+  <div style="position: absolute; left: 0; top: 0; right: 0; height: 30px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; box-sizing: border-box; background: rgba(20,16,36,0.35); backdrop-filter: blur(20px); color: #ffffff; font-size: 13px">
+    <div style="display: flex; gap: 18px; align-items: center">
+      <span style="font-weight: 700">Notes</span><span>File</span><span>Edit</span><span>View</span><span>Window</span>
+    </div>
+    <div style="display: flex; gap: 16px; align-items: center">
+      <span style="display: flex; gap: 6px; align-items: center; padding: 2px 8px; border-radius: 6px; background: rgba(255,255,255,0.16); font-variant-numeric: tabular-nums">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l2 2M9 2h6"></path></svg>{{timeText}}
+      </span>
+      <span>Sat 21 Nov  18:35</span>
+    </div>
+  </div>
+
+  <div style="position: absolute; left: 96px; top: 92px; width: 700px; height: 560px; border-radius: 14px; background: rgba(30,28,40,0.92); box-shadow: 0 30px 80px rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.08); overflow: hidden">
+    <div style="height: 40px; display: flex; align-items: center; gap: 8px; padding: 0 14px; border-bottom: 1px solid rgba(255,255,255,0.08)">
+      <span style="width: 12px; height: 12px; border-radius: 6px; background: #ff5f57"></span>
+      <span style="width: 12px; height: 12px; border-radius: 6px; background: #febc2e"></span>
+      <span style="width: 12px; height: 12px; border-radius: 6px; background: #28c840"></span>
+      <span style="margin-left: 16px; color: #c9c6d6; font-size: 13px">Thesis draft — chapter 3</span>
+    </div>
+    <div style="padding: 36px 48px; display: flex; flex-direction: column; gap: 14px">
+      <div style="height: 22px; width: 52%; border-radius: 6px; background: rgba(255,255,255,0.22)"></div>
+      <div style="height: 10px; width: 92%; border-radius: 5px; background: rgba(255,255,255,0.1)"></div>
+      <div style="height: 10px; width: 86%; border-radius: 5px; background: rgba(255,255,255,0.1)"></div>
+      <div style="height: 10px; width: 90%; border-radius: 5px; background: rgba(255,255,255,0.1)"></div>
+      <div style="height: 10px; width: 64%; border-radius: 5px; background: rgba(255,255,255,0.1)"></div>
+      <div style="height: 10px; width: 0; margin-top: 10px"></div>
+      <div style="height: 10px; width: 88%; border-radius: 5px; background: rgba(255,255,255,0.1)"></div>
+      <div style="height: 10px; width: 94%; border-radius: 5px; background: rgba(255,255,255,0.1)"></div>
+      <div style="height: 10px; width: 72%; border-radius: 5px; background: rgba(255,255,255,0.1)"></div>
+    </div>
+  </div>
+
+  <div style="position: absolute; left: 700px; top: 64px; width: 336px; display: flex; flex-direction: column; gap: 10px">
+
+    <div style="box-sizing: border-box; width: 336px; padding: 16px 18px 18px; border-radius: 30px; background: {{t.bg}}; border: 1px solid {{t.border}}; color: {{t.text}}; box-shadow: {{t.shadow}}; backdrop-filter: blur(30px) saturate(180%); -webkit-backdrop-filter: blur(30px) saturate(180%); display: flex; flex-direction: column; gap: 8px">
+      <div style="display: flex; align-items: center; justify-content: space-between">
+        <div style="display: flex; align-items: center; gap: 8px">
+          <button aria-label="Close widget (keeps running in the menu bar)" style="width: 22px; height: 22px; border-radius: 11px; border: none; padding: 0; display: flex; align-items: center; justify-content: center; background: {{t.btn}}; color: {{t.text}}">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+          </button>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{t.accent}}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3-1-5 1-8.5z"></path></svg>
+          <span style="font-size: 15px; font-weight: 600; font-family: {{t.font}}">{{modeLabel}}</span>
+        </div>
+        <div style="display: flex; gap: 6px">
+          <button aria-label="Edit time" onClick="{{openTime}}" style="width: 34px; height: 34px; border-radius: 17px; border: none; display: flex; align-items: center; justify-content: center; background: {{timeBtnBg}}; color: {{timeBtnFg}}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l2 2M9 2h6"></path></svg>
+          </button>
+          <button aria-label="Focus music" onClick="{{openMusic}}" style="width: 34px; height: 34px; border-radius: 17px; border: none; display: flex; align-items: center; justify-content: center; background: {{musicBtnBg}}; color: {{musicBtnFg}}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l11-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="17" cy="16" r="3"></circle></svg>
+          </button>
+          <button aria-label="Template" onClick="{{openTheme}}" style="width: 34px; height: 34px; border-radius: 17px; border: none; display: flex; align-items: center; justify-content: center; background: {{themeBtnBg}}; color: {{themeBtnFg}}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.4 0 2-1 2-2 0-1.5-1-2 0-3 .8-.8 2-.5 3-.5a4 4 0 0 0 4-4C21 7 17 3 12 3z"></path><circle cx="7.5" cy="11" r="1.2"></circle><circle cx="11" cy="7.5" r="1.2"></circle><circle cx="15.5" cy="8.5" r="1.2"></circle></svg>
+          </button>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; justify-content: space-between">
+        <span style="font-family: {{t.font}}; font-size: {{t.timeSize}}; font-weight: {{t.timeWeight}}; letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums">{{timeText}}</span>
+        <div style="display: flex; gap: 8px; align-items: center">
+          <button aria-label="Skip to next session" onClick="{{skip}}" style="width: 38px; height: 38px; border-radius: 19px; border: none; display: flex; align-items: center; justify-content: center; background: {{t.btn}}; color: {{t.text}}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 5l9 7-9 7zM16 5h3v14h-3z"></path></svg>
+          </button>
+          <button aria-label="{{playLabel}}" onClick="{{toggleRun}}" style="width: 48px; height: 48px; border-radius: 24px; border: none; display: flex; align-items: center; justify-content: center; background: {{t.accent}}; color: {{t.onAccent}}">
+            <sc-if value="{{running}}" hint-placeholder-val="{{ true }}">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4h4v16H6zM14 4h4v16h-4z"></path></svg>
+            </sc-if>
+            <sc-if value="{{paused}}" hint-placeholder-val="{{ false }}">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4l13 8-13 8z"></path></svg>
+            </sc-if>
+          </button>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 12px; margin-top: 4px">
+        <div style="flex: 1; height: 8px; border-radius: 4px; position: relative; overflow: hidden; background: repeating-linear-gradient(90deg, {{t.track}} 0 2px, rgba(0,0,0,0) 2px 6px)">
+          <div style="position: absolute; left: 0; top: 0; bottom: 0; width: {{pct}}; border-radius: 4px; background: {{t.accent}}"></div>
+        </div>
+        <div style="display: flex; gap: 5px; align-items: center">
+          <sc-for list="{{dots}}" as="d" hint-placeholder-count="4">
+            <span style="width: 7px; height: 7px; border-radius: 4px; background: {{d.bg}}"></span>
+          </sc-for>
+        </div>
+      </div>
+
+      <sc-if value="{{musicOn}}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px; font-size: 12px; color: {{t.sub}}">
+          <div style="display: flex; gap: 2px; align-items: flex-end; height: 12px">
+            <span style="width: 3px; height: 6px; border-radius: 2px; background: {{t.accent}}"></span>
+            <span style="width: 3px; height: 12px; border-radius: 2px; background: {{t.accent}}"></span>
+            <span style="width: 3px; height: 8px; border-radius: 2px; background: {{t.accent}}"></span>
+          </div>
+          <span style="font-weight: 600; color: {{t.text}}">{{trackName}}</span>
+          <span>· {{sourceName}}</span>
+        </div>
+      </sc-if>
+    </div>
+
+    <sc-if value="{{panelTime}}" hint-placeholder-val="{{ false }}">
+      <div style="box-sizing: border-box; width: 336px; padding: 18px; border-radius: 26px; background: {{t.bg}}; border: 1px solid {{t.border}}; color: {{t.text}}; box-shadow: {{t.shadow}}; backdrop-filter: blur(30px) saturate(180%); display: flex; flex-direction: column; gap: 14px">
+        <div style="display: flex; justify-content: space-between; align-items: center">
+          <span style="font-size: 15px; font-weight: 600">Edit time</span>
+          <button onClick="{{closePanel}}" style="border: none; padding: 6px 12px; border-radius: 14px; font-size: 13px; font-weight: 600; background: {{t.btn}}; color: {{t.text}}">Done</button>
+        </div>
+        <sc-for list="{{durations}}" as="r" hint-placeholder-count="3">
+          <div style="display: flex; justify-content: space-between; align-items: center">
+            <div style="display: flex; flex-direction: column; gap: 2px">
+              <span style="font-size: 14px; font-weight: 500">{{r.label}}</span>
+              <span style="font-size: 12px; color: {{t.sub}}">{{r.hint}}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 4px; padding: 3px; border-radius: 16px; background: {{t.btn}}">
+              <button aria-label="Decrease" onClick="{{r.dec}}" style="width: 28px; height: 28px; border-radius: 14px; border: none; background: rgba(0,0,0,0); color: {{t.text}}; font-size: 16px">−</button>
+              <span style="min-width: 46px; text-align: center; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums">{{r.value}}</span>
+              <button aria-label="Increase" onClick="{{r.inc}}" style="width: 28px; height: 28px; border-radius: 14px; border: none; background: rgba(0,0,0,0); color: {{t.text}}; font-size: 16px">+</button>
+            </div>
+          </div>
+        </sc-for>
+        <div style="display: flex; gap: 6px">
+          <sc-for list="{{presets}}" as="p" hint-placeholder-count="3">
+            <button onClick="{{p.pick}}" style="flex: 1; border: none; padding: 8px 0; border-radius: 12px; font-size: 13px; font-weight: 600; background: {{p.bg}}; color: {{p.fg}}">{{p.label}}</button>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{panelMusic}}" hint-placeholder-val="{{ false }}">
+      <div style="box-sizing: border-box; width: 336px; padding: 18px; border-radius: 26px; background: {{t.bg}}; border: 1px solid {{t.border}}; color: {{t.text}}; box-shadow: {{t.shadow}}; backdrop-filter: blur(30px) saturate(180%); display: flex; flex-direction: column; gap: 12px">
+        <div style="display: flex; justify-content: space-between; align-items: center">
+          <span style="font-size: 15px; font-weight: 600">Focus music</span>
+          <button onClick="{{closePanel}}" style="border: none; padding: 6px 12px; border-radius: 14px; font-size: 13px; font-weight: 600; background: {{t.btn}}; color: {{t.text}}">Done</button>
+        </div>
+        <div style="display: flex; padding: 3px; border-radius: 14px; background: {{t.btn}}">
+          <button onClick="{{pickYt}}" style="flex: 1; border: none; padding: 7px 0; border-radius: 11px; font-size: 13px; font-weight: 600; background: {{ytBg}}; color: {{ytFg}}">YouTube Music</button>
+          <button onClick="{{pickSp}}" style="flex: 1; border: none; padding: 7px 0; border-radius: 11px; font-size: 13px; font-weight: 600; background: {{spBg}}; color: {{spFg}}">Spotify</button>
+        </div>
+        <label style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; color: {{t.sub}}">Paste a playlist, album or track link
+          <input type="text" placeholder="{{linkPlaceholder}}" style="border: 1px solid {{t.border}}; border-radius: 12px; padding: 9px 12px; font-size: 13px; background: {{t.btn}}; color: {{t.text}}; outline: none">
+        </label>
+        <span style="font-size: 12px; color: {{t.sub}}">Quick picks</span>
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <sc-for list="{{tracks}}" as="k" hint-placeholder-count="4">
+            <button onClick="{{k.pick}}" style="display: flex; align-items: center; justify-content: space-between; border: none; padding: 8px 10px; border-radius: 12px; text-align: left; background: {{k.bg}}; color: {{t.text}}">
+              <span style="display: flex; flex-direction: column; gap: 1px">
+                <span style="font-size: 13px; font-weight: 600">{{k.name}}</span>
+                <span style="font-size: 11px; color: {{t.sub}}">{{k.meta}}</span>
+              </span>
+              <span style="font-size: 11px; font-weight: 600; color: {{t.sub}}">{{k.state}}</span>
+            </button>
+          </sc-for>
+        </div>
+        <label style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: {{t.sub}}">Volume
+          <input type="range" min="0" max="100" value="60" style="flex: 1; accent-color: {{t.accent}}">
+        </label>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{panelTheme}}" hint-placeholder-val="{{ false }}">
+      <div style="box-sizing: border-box; width: 336px; padding: 18px; border-radius: 26px; background: {{t.bg}}; border: 1px solid {{t.border}}; color: {{t.text}}; box-shadow: {{t.shadow}}; backdrop-filter: blur(30px) saturate(180%); display: flex; flex-direction: column; gap: 12px">
+        <div style="display: flex; justify-content: space-between; align-items: center">
+          <span style="font-size: 15px; font-weight: 600">Template</span>
+          <button onClick="{{closePanel}}" style="border: none; padding: 6px 12px; border-radius: 14px; font-size: 13px; font-weight: 600; background: {{t.btn}}; color: {{t.text}}">Done</button>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px">
+          <sc-for list="{{templates}}" as="x" hint-placeholder-count="9">
+            <button aria-label="{{x.name}}" onClick="{{x.pick}}" style="border: none; padding: 0; background: rgba(0,0,0,0); display: flex; flex-direction: column; gap: 5px; align-items: stretch; color: {{t.text}}">
+              <span style="height: 58px; border-radius: 14px; box-sizing: border-box; padding: 8px 9px; display: flex; flex-direction: column; justify-content: space-between; background: {{x.bg}}; color: {{x.text}}; border: 1px solid {{x.border}}; outline: {{x.ring}}; outline-offset: 2px">
+                <span style="font-family: {{x.font}}; font-size: 17px; font-weight: 600; text-align: left; font-variant-numeric: tabular-nums">25:00</span>
+                <span style="height: 4px; width: 60%; border-radius: 2px; background: {{x.accent}}"></span>
+              </span>
+              <span style="font-size: 11px; font-weight: 500; text-align: center">{{x.name}}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+var TPL = [
+  {id:'glass', name:'Liquid Glass', bg:'rgba(255,255,255,0.14)', border:'rgba(255,255,255,0.38)', text:'#ffffff', sub:'rgba(255,255,255,0.78)', accent:'#ffffff', onAccent:'#111111', track:'rgba(255,255,255,0.35)', btn:'rgba(255,255,255,0.18)', font:"'Inter', -apple-system, sans-serif", timeSize:'60px', timeWeight:'600', shadow:'0 24px 60px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.5)'},
+  {id:'ember', name:'Ember', bg:'linear-gradient(165deg, #8a2f12 0%, #3b0e05 100%)', border:'rgba(255,140,90,0.35)', text:'#ffffff', sub:'#ffb79c', accent:'#ff5a1f', onAccent:'#ffffff', track:'rgba(255,120,70,0.45)', btn:'rgba(255,255,255,0.12)', font:"'Inter', -apple-system, sans-serif", timeSize:'60px', timeWeight:'600', shadow:'0 24px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.18)'},
+  {id:'forest', name:'Forest', bg:'linear-gradient(165deg, #1f5216 0%, #0a1c07 100%)', border:'rgba(120,220,90,0.3)', text:'#ffffff', sub:'#b4e3a6', accent:'#46e02a', onAccent:'#0a1c07', track:'rgba(120,220,90,0.4)', btn:'rgba(255,255,255,0.12)', font:"'Inter', -apple-system, sans-serif", timeSize:'60px', timeWeight:'600', shadow:'0 24px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.18)'},
+  {id:'tide', name:'Tide', bg:'linear-gradient(165deg, #1a3f94 0%, #0a1538 100%)', border:'rgba(120,160,255,0.35)', text:'#ffffff', sub:'#b8ccff', accent:'#3b82ff', onAccent:'#ffffff', track:'rgba(120,160,255,0.45)', btn:'rgba(255,255,255,0.12)', font:"'Inter', -apple-system, sans-serif", timeSize:'60px', timeWeight:'600', shadow:'0 24px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.18)'},
+  {id:'tangerine', name:'Tangerine', bg:'#ff8a1a', border:'rgba(0,0,0,0.1)', text:'#111111', sub:'rgba(17,17,17,0.72)', accent:'#111111', onAccent:'#ff8a1a', track:'rgba(17,17,17,0.3)', btn:'rgba(17,17,17,0.12)', font:"'Inter', -apple-system, sans-serif", timeSize:'60px', timeWeight:'500', shadow:'0 24px 60px rgba(0,0,0,0.3)'},
+  {id:'sunny', name:'Sunny', bg:'#ffd60a', border:'rgba(0,0,0,0.1)', text:'#111111', sub:'rgba(17,17,17,0.72)', accent:'#111111', onAccent:'#ffd60a', track:'rgba(17,17,17,0.3)', btn:'rgba(17,17,17,0.1)', font:"'Inter', -apple-system, sans-serif", timeSize:'60px', timeWeight:'500', shadow:'0 24px 60px rgba(0,0,0,0.3)'},
+  {id:'paper', name:'Paper', bg:'#f5f4ef', border:'rgba(0,0,0,0.08)', text:'#111111', sub:'#555555', accent:'#e8331b', onAccent:'#ffffff', track:'rgba(17,17,17,0.22)', btn:'rgba(17,17,17,0.07)', font:"'Inter', -apple-system, sans-serif", timeSize:'60px', timeWeight:'500', shadow:'0 24px 60px rgba(0,0,0,0.3)'},
+  {id:'pixel', name:'Pixel', bg:'#c5d0a0', border:'rgba(37,51,26,0.3)', text:'#25331a', sub:'#4a5a35', accent:'#25331a', onAccent:'#c5d0a0', track:'rgba(37,51,26,0.35)', btn:'rgba(37,51,26,0.12)', font:"'VT323', ui-monospace, monospace", timeSize:'72px', timeWeight:'400', shadow:'0 24px 60px rgba(0,0,0,0.3), inset 0 0 0 4px rgba(37,51,26,0.08)'},
+  {id:'midnight', name:'Midnight', bg:'#050505', border:'rgba(255,255,255,0.14)', text:'#ffffff', sub:'#a3a3a3', accent:'#ff2d2d', onAccent:'#ffffff', track:'rgba(255,255,255,0.28)', btn:'rgba(255,255,255,0.1)', font:"'Inter', -apple-system, sans-serif", timeSize:'60px', timeWeight:'700', shadow:'0 24px 60px rgba(0,0,0,0.5)'}
+];
+var TRACKS = {
+  yt: [
+    {name:'Lofi Focus Radio', meta:'YouTube Music · live'},
+    {name:'Deep Focus Piano', meta:'YouTube Music · playlist'},
+    {name:'Rain on a Window', meta:'YouTube Music · 3 h'},
+    {name:'Brown Noise', meta:'YouTube Music · 10 h'}
+  ],
+  sp: [
+    {name:'Deep Focus', meta:'Spotify · playlist'},
+    {name:'Lofi Beats', meta:'Spotify · playlist'},
+    {name:'Peaceful Piano', meta:'Spotify · playlist'},
+    {name:'Brown Noise', meta:'Spotify · album'}
+  ]
+};
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tpl: 'glass', panel: null, running: true, mode: 'focus', round: 2, remaining: 24 * 60 + 59, focus: 25, short: 5, long: 15, source: 'yt', track: 0, music: true };
+  }
+  componentDidMount() {
+    var self = this;
+    this.iv = setInterval(function () {
+      var s = self.state;
+      if (!s.running) return;
+      if (s.remaining <= 1) { self.advance(); } else { self.setState({ remaining: s.remaining - 1 }); }
+    }, 1000);
+  }
+  componentWillUnmount() { clearInterval(this.iv); }
+  advance() {
+    var s = this.state;
+    if (s.mode === 'focus') {
+      var isLong = s.round >= 4;
+      this.setState({ mode: isLong ? 'long' : 'short', remaining: (isLong ? s.long : s.short) * 60 });
+    } else {
+      this.setState({ mode: 'focus', round: s.mode === 'long' ? 1 : s.round + 1, remaining: s.focus * 60 });
+    }
+  }
+  total() { var s = this.state; return (s.mode === 'focus' ? s.focus : s.mode === 'short' ? s.short : s.long) * 60; }
+  renderVals() {
+    var self = this, s = this.state;
+    var t = TPL.filter(function (x) { return x.id === s.tpl; })[0] || TPL[0];
+    var mm = Math.floor(s.remaining / 60), ss = s.remaining % 60;
+    var timeText = (mm < 10 ? '0' : '') + mm + ':' + (ss < 10 ? '0' : '') + ss;
+    var pct = Math.max(0, Math.min(100, (1 - s.remaining / self.total()) * 100)).toFixed(1) + '%';
+    function open(p) { return function () { self.setState({ panel: s.panel === p ? null : p }); }; }
+    function on(p) { return s.panel === p; }
+    function setDur(key, d) { return function () {
+      var v = Math.max(1, Math.min(120, s[key] + d)); var patch = {}; patch[key] = v;
+      var modeKey = s.mode === 'focus' ? 'focus' : s.mode === 'short' ? 'short' : 'long';
+      if (key === modeKey) { patch.remaining = v * 60; }
+      self.setState(patch);
+    }; }
+    var dots = [1, 2, 3, 4].map(function (i) { return { bg: i <= s.round ? t.accent : t.track }; });
+    var list = TRACKS[s.source];
+    return {
+      t: t, timeText: timeText, pct: pct,
+      modeLabel: s.mode === 'focus' ? 'Focus' : s.mode === 'short' ? 'Short break' : 'Long break',
+      running: s.running, paused: !s.running, playLabel: s.running ? 'Pause' : 'Start',
+      toggleRun: function () { self.setState({ running: !s.running }); },
+      skip: function () { self.advance(); },
+      openTime: open('time'), openMusic: open('music'), openTheme: open('theme'),
+      closePanel: function () { self.setState({ panel: null }); },
+      panelTime: on('time'), panelMusic: on('music'), panelTheme: on('theme'),
+      timeBtnBg: on('time') ? t.accent : t.btn, timeBtnFg: on('time') ? t.onAccent : t.text,
+      musicBtnBg: on('music') ? t.accent : t.btn, musicBtnFg: on('music') ? t.onAccent : t.text,
+      themeBtnBg: on('theme') ? t.accent : t.btn, themeBtnFg: on('theme') ? t.onAccent : t.text,
+      dots: dots,
+      musicOn: s.music,
+      trackName: list[s.track].name, sourceName: s.source === 'yt' ? 'YouTube Music' : 'Spotify',
+      durations: [
+        { label: 'Focus', hint: 'Deep work block', value: s.focus + ' min', dec: setDur('focus', -5), inc: setDur('focus', 5) },
+        { label: 'Short break', hint: 'After each focus', value: s.short + ' min', dec: setDur('short', -1), inc: setDur('short', 1) },
+        { label: 'Long break', hint: 'Every 4 rounds', value: s.long + ' min', dec: setDur('long', -5), inc: setDur('long', 5) }
+      ],
+      presets: [[25, 5, 15], [50, 10, 20], [90, 20, 30]].map(function (p) {
+        var act = s.focus === p[0] && s.short === p[1];
+        return { label: p[0] + ' / ' + p[1], bg: act ? t.accent : t.btn, fg: act ? t.onAccent : t.text,
+          pick: function () { self.setState({ focus: p[0], short: p[1], long: p[2], remaining: s.mode === 'focus' ? p[0] * 60 : s.remaining }); } };
+      }),
+      pickYt: function () { self.setState({ source: 'yt', track: 0 }); },
+      pickSp: function () { self.setState({ source: 'sp', track: 0 }); },
+      ytBg: s.source === 'yt' ? t.accent : 'rgba(0,0,0,0)', ytFg: s.source === 'yt' ? t.onAccent : t.text,
+      spBg: s.source === 'sp' ? t.accent : 'rgba(0,0,0,0)', spFg: s.source === 'sp' ? t.onAccent : t.text,
+      linkPlaceholder: s.source === 'yt' ? 'music.youtube.com/playlist?list=…' : 'open.spotify.com/playlist/…',
+      tracks: list.map(function (k, i) {
+        var act = s.music && s.track === i;
+        return { name: k.name, meta: k.meta, state: act ? 'Playing' : 'Play', bg: act ? t.btn : 'rgba(0,0,0,0)',
+          pick: function () { self.setState({ track: i, music: !(s.music && s.track === i) }); } };
+      }),
+      templates: TPL.map(function (x) {
+        return { name: x.name, bg: x.bg, text: x.text, accent: x.accent, border: x.border, font: x.font,
+          ring: x.id === s.tpl ? '2px solid ' + t.accent : '2px solid rgba(0,0,0,0)',
+          pick: function () { self.setState({ tpl: x.id }); } };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Widget states and relaunch</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#ffffff}a:hover{color:#dddddd}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="width: 1280px; height: 900px; box-sizing: border-box; padding: 48px 64px; font-family: 'Inter', -apple-system, sans-serif; color: #ffffff; background: radial-gradient(circle at 85% 12%, #ff7a59 0, rgba(255,122,89,0) 36%), radial-gradient(circle at 10% 60%, #7b5cff 0, rgba(123,92,255,0) 42%), radial-gradient(circle at 70% 100%, #1fb5ff 0, rgba(31,181,255,0) 42%), #17122a; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 48px; row-gap: 56px; align-items: start">
+
+  <div style="display: flex; flex-direction: column; gap: 12px">
+    <span style="font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.78)">Paused</span>
+    <div style="box-sizing: border-box; width: 336px; padding: 16px 18px 18px; border-radius: 30px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 24px 60px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.45); backdrop-filter: blur(30px) saturate(180%); display: flex; flex-direction: column; gap: 8px">
+      <div style="display: flex; align-items: center; justify-content: space-between">
+        <span style="font-size: 15px; font-weight: 600">Focus · paused</span>
+        <span style="font-size: 12px; color: rgba(255,255,255,0.78)">2 / 4</span>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between">
+        <span style="font-size: 60px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; color: rgba(255,255,255,0.7); font-variant-numeric: tabular-nums">12:08</span>
+        <span style="width: 48px; height: 48px; border-radius: 24px; display: flex; align-items: center; justify-content: center; background: #ffffff; color: #111111"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4l13 8-13 8z"></path></svg></span>
+      </div>
+      <div style="height: 8px; margin-top: 4px; border-radius: 4px; position: relative; overflow: hidden; background: repeating-linear-gradient(90deg, rgba(255,255,255,0.35) 0 2px, rgba(0,0,0,0) 2px 6px)">
+        <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 51%; border-radius: 4px; background: rgba(255,255,255,0.7)"></div>
+      </div>
+    </div>
+    <span style="font-size: 12px; color: rgba(255,255,255,0.75)">Digits dim; music pauses with the timer.</span>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 12px">
+    <span style="font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.78)">Short break</span>
+    <div style="box-sizing: border-box; width: 336px; padding: 16px 18px 18px; border-radius: 30px; background: rgba(70,224,42,0.16); border: 1px solid rgba(160,255,140,0.4); box-shadow: 0 24px 60px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.45); backdrop-filter: blur(30px) saturate(180%); display: flex; flex-direction: column; gap: 8px">
+      <div style="display: flex; align-items: center; justify-content: space-between">
+        <div style="display: flex; align-items: center; gap: 8px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b9ffab" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM17 10h1.5a2.5 2.5 0 0 1 0 5H17M8 3v3M12 3v3"></path></svg>
+          <span style="font-size: 15px; font-weight: 600">Short break</span>
+        </div>
+        <span style="font-size: 12px; color: rgba(255,255,255,0.78)">Stretch · drink water</span>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between">
+        <span style="font-size: 60px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums">04:12</span>
+        <span style="width: 48px; height: 48px; border-radius: 24px; display: flex; align-items: center; justify-content: center; background: #b9ffab; color: #0a1c07"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4h4v16H6zM14 4h4v16h-4z"></path></svg></span>
+      </div>
+      <div style="height: 8px; margin-top: 4px; border-radius: 4px; position: relative; overflow: hidden; background: repeating-linear-gradient(90deg, rgba(185,255,171,0.4) 0 2px, rgba(0,0,0,0) 2px 6px)">
+        <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 16%; border-radius: 4px; background: #b9ffab"></div>
+      </div>
+    </div>
+    <span style="font-size: 12px; color: rgba(255,255,255,0.75)">Breaks tint the template green and fade the music.</span>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 12px">
+    <span style="font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.78)">Cycle complete</span>
+    <div style="box-sizing: border-box; width: 336px; padding: 18px; border-radius: 30px; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.38); box-shadow: 0 24px 60px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.5); backdrop-filter: blur(30px) saturate(180%); display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; align-items: center; gap: 12px">
+        <span style="width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; background: #ffffff; color: #111111"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg></span>
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 17px; font-weight: 600">Focus hour done</span>
+          <span style="font-size: 12px; color: rgba(255,255,255,0.78)">4 rounds · 1 h 40 min focused today</span>
+        </div>
+      </div>
+      <div style="display: flex; gap: 8px">
+        <button style="flex: 1; border: none; padding: 10px 0; border-radius: 14px; font-size: 13px; font-weight: 600; background: #ffffff; color: #111111">Start again</button>
+        <button style="flex: 1; border: none; padding: 10px 0; border-radius: 14px; font-size: 13px; font-weight: 600; background: rgba(255,255,255,0.18); color: #ffffff">Close</button>
+      </div>
+    </div>
+    <span style="font-size: 12px; color: rgba(255,255,255,0.75)">Soft chime + notification; nothing auto-closes.</span>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 12px">
+    <span style="font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.78)">Minimized pill</span>
+    <div style="display: flex; align-items: center; gap: 10px; width: 190px; box-sizing: border-box; padding: 8px 8px 8px 16px; border-radius: 24px; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.38); box-shadow: 0 16px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.5); backdrop-filter: blur(30px) saturate(180%)">
+      <span style="width: 8px; height: 8px; border-radius: 4px; background: #ff5a1f"></span>
+      <span style="flex: 1; font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums">18:42</span>
+      <span style="width: 32px; height: 32px; border-radius: 16px; display: flex; align-items: center; justify-content: center; background: #ffffff; color: #111111"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4h4v16H6zM14 4h4v16h-4z"></path></svg></span>
+    </div>
+    <span style="font-size: 12px; color: rgba(255,255,255,0.75)">Double-click the widget to shrink it; double-click again to expand. Drag either to any spot.</span>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 12px">
+    <span style="font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.78)">Relaunch from the menu bar</span>
+    <div style="display: flex; flex-direction: column; gap: 6px; width: 336px">
+      <div style="align-self: flex-end; display: flex; gap: 6px; align-items: center; padding: 3px 10px; border-radius: 6px; background: rgba(255,255,255,0.2); font-size: 13px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l2 2M9 2h6"></path></svg>Pomodoraaa
+      </div>
+      <div style="box-sizing: border-box; padding: 6px; border-radius: 12px; background: rgba(40,36,56,0.72); border: 1px solid rgba(255,255,255,0.18); box-shadow: 0 20px 50px rgba(0,0,0,0.4); backdrop-filter: blur(30px) saturate(180%); display: flex; flex-direction: column; font-size: 13px">
+        <div style="display: flex; justify-content: space-between; padding: 6px 10px; border-radius: 6px; background: #3b82ff"><span>Show widget</span><span>⌃ ⌥ P</span></div>
+        <div style="display: flex; justify-content: space-between; padding: 6px 10px"><span>Start focus (25 min)</span><span style="color: rgba(255,255,255,0.7)"></span></div>
+        <div style="display: flex; justify-content: space-between; padding: 6px 10px"><span>Pause / resume</span><span style="color: rgba(255,255,255,0.7)">⌃ ⌥ Space</span></div>
+        <div style="height: 1px; margin: 4px 8px; background: rgba(255,255,255,0.15)"></div>
+        <div style="display: flex; justify-content: space-between; padding: 6px 10px"><span>Template</span><span style="color: rgba(255,255,255,0.7)">›</span></div>
+        <div style="display: flex; justify-content: space-between; padding: 6px 10px"><span>Launch at login</span><span style="color: rgba(255,255,255,0.7)">✓</span></div>
+        <div style="height: 1px; margin: 4px 8px; background: rgba(255,255,255,0.15)"></div>
+        <div style="display: flex; justify-content: space-between; padding: 6px 10px"><span>Quit Pomodoraaa</span><span style="color: rgba(255,255,255,0.7)">⌘ Q</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 12px">
+    <span style="font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.78)">Closed → reopen anywhere</span>
+    <div style="box-sizing: border-box; width: 336px; padding: 18px; border-radius: 26px; background: rgba(255,255,255,0.1); border: 1px dashed rgba(255,255,255,0.4); display: flex; flex-direction: column; gap: 12px; font-size: 13px; line-height: 1.45">
+      <span style="font-size: 15px; font-weight: 600">Three ways back</span>
+      <span>1. Click the timer icon in the menu bar → Show widget.</span>
+      <span>2. Press ⌃ ⌥ P from any app.</span>
+      <span>3. Open Pomodoraaa from Launchpad or the Dock — it reappears where you left it, with your last template.</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

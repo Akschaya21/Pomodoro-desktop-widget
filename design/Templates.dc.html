@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Template gallery</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=VT323&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#ffffff}a:hover{color:#dddddd}
+</style>
+</helmet>
+<div style="width: 1280px; height: 900px; box-sizing: border-box; padding: 48px 64px; font-family: 'Inter', -apple-system, sans-serif; color: #ffffff; background: radial-gradient(circle at 15% 15%, #ff7a59 0, rgba(255,122,89,0) 36%), radial-gradient(circle at 90% 50%, #7b5cff 0, rgba(123,92,255,0) 40%), radial-gradient(circle at 30% 95%, #1fb5ff 0, rgba(31,181,255,0) 40%), #17122a; display: flex; flex-direction: column; gap: 28px">
+  <div style="display: flex; justify-content: space-between; align-items: baseline">
+    <span style="font-size: 28px; font-weight: 700; letter-spacing: -0.01em">Templates</span>
+    <span style="font-size: 14px; color: rgba(255,255,255,0.75)">9 looks · switch any time from the palette button</span>
+  </div>
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 48px; row-gap: 26px">
+    <sc-for list="{{templates}}" as="t" hint-placeholder-count="9">
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <div style="box-sizing: border-box; width: 336px; padding: 16px 18px 18px; border-radius: 30px; background: {{t.bg}}; border: 1px solid {{t.border}}; color: {{t.text}}; box-shadow: {{t.shadow}}; backdrop-filter: blur(30px) saturate(180%); display: flex; flex-direction: column; gap: 8px">
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <div style="display: flex; align-items: center; gap: 8px">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{t.accent}}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3-1-5 1-8.5z"></path></svg>
+              <span style="font-size: 15px; font-weight: 600; font-family: {{t.font}}">Focus</span>
+            </div>
+            <span style="font-size: 12px; font-weight: 600; color: {{t.sub}}">2 / 4</span>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <span style="font-family: {{t.font}}; font-size: {{t.timeSize}}; font-weight: {{t.timeWeight}}; letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums">19:46</span>
+            <span style="width: 48px; height: 48px; border-radius: 24px; display: flex; align-items: center; justify-content: center; background: {{t.accent}}; color: {{t.onAccent}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4h4v16H6zM14 4h4v16h-4z"></path></svg></span>
+          </div>
+          <div style="height: 8px; margin-top: 4px; border-radius: 4px; position: relative; overflow: hidden; background: repeating-linear-gradient(90deg, {{t.track}} 0 2px, rgba(0,0,0,0) 2px 6px)">
+            <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 62%; border-radius: 4px; background: {{t.accent}}"></div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px; padding-left: 6px">
+          <span style="font-size: 14px; font-weight: 600">{{t.name}}</span>
+          <span style="font-size: 12px; color: rgba(255,255,255,0.75)">{{t.note}}</span>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":900}}'>
+var I = "'Inter', -apple-system, sans-serif";
+var TPL = [
+  {name:'Liquid Glass', note:'Default · frosted, adapts to what is behind it', bg:'rgba(255,255,255,0.14)', border:'rgba(255,255,255,0.38)', text:'#ffffff', sub:'rgba(255,255,255,0.78)', accent:'#ffffff', onAccent:'#111111', track:'rgba(255,255,255,0.35)', font:I, timeSize:'60px', timeWeight:'600', shadow:'0 24px 60px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.5)'},
+  {name:'Ember', note:'Warm dusk gradient, orange progress', bg:'linear-gradient(165deg, #8a2f12 0%, #3b0e05 100%)', border:'rgba(255,140,90,0.35)', text:'#ffffff', sub:'#ffb79c', accent:'#ff5a1f', onAccent:'#ffffff', track:'rgba(255,120,70,0.45)', font:I, timeSize:'60px', timeWeight:'600', shadow:'0 24px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.18)'},
+  {name:'Forest', note:'Deep green, for long reading blocks', bg:'linear-gradient(165deg, #1f5216 0%, #0a1c07 100%)', border:'rgba(120,220,90,0.3)', text:'#ffffff', sub:'#b4e3a6', accent:'#46e02a', onAccent:'#0a1c07', track:'rgba(120,220,90,0.4)', font:I, timeSize:'60px', timeWeight:'600', shadow:'0 24px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.18)'},
+  {name:'Tide', note:'Ocean blue, calm study mode', bg:'linear-gradient(165deg, #1a3f94 0%, #0a1538 100%)', border:'rgba(120,160,255,0.35)', text:'#ffffff', sub:'#b8ccff', accent:'#3b82ff', onAccent:'#ffffff', track:'rgba(120,160,255,0.45)', font:I, timeSize:'60px', timeWeight:'600', shadow:'0 24px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.18)'},
+  {name:'Tangerine', note:'Flat, bold, high-contrast tile', bg:'#ff8a1a', border:'rgba(0,0,0,0.1)', text:'#111111', sub:'rgba(17,17,17,0.72)', accent:'#111111', onAccent:'#ff8a1a', track:'rgba(17,17,17,0.3)', font:I, timeSize:'60px', timeWeight:'500', shadow:'0 24px 60px rgba(0,0,0,0.3)'},
+  {name:'Sunny', note:'Bright yellow, clear-sky energy', bg:'#ffd60a', border:'rgba(0,0,0,0.1)', text:'#111111', sub:'rgba(17,17,17,0.72)', accent:'#111111', onAccent:'#ffd60a', track:'rgba(17,17,17,0.3)', font:I, timeSize:'60px', timeWeight:'500', shadow:'0 24px 60px rgba(0,0,0,0.3)'},
+  {name:'Paper', note:'Clean white with a red accent hand', bg:'#f5f4ef', border:'rgba(0,0,0,0.08)', text:'#111111', sub:'#555555', accent:'#e8331b', onAccent:'#ffffff', track:'rgba(17,17,17,0.22)', font:I, timeSize:'60px', timeWeight:'500', shadow:'0 24px 60px rgba(0,0,0,0.3)'},
+  {name:'Pixel', note:'Retro LCD, monospace digits', bg:'#c5d0a0', border:'rgba(37,51,26,0.3)', text:'#25331a', sub:'#4a5a35', accent:'#25331a', onAccent:'#c5d0a0', track:'rgba(37,51,26,0.35)', font:"'VT323', ui-monospace, monospace", timeSize:'72px', timeWeight:'400', shadow:'0 24px 60px rgba(0,0,0,0.3), inset 0 0 0 4px rgba(37,51,26,0.08)'},
+  {name:'Midnight', note:'True black with a red record dot', bg:'#050505', border:'rgba(255,255,255,0.14)', text:'#ffffff', sub:'#a3a3a3', accent:'#ff2d2d', onAccent:'#ffffff', track:'rgba(255,255,255,0.28)', font:I, timeSize:'60px', timeWeight:'700', shadow:'0 24px 60px rgba(0,0,0,0.5)'}
+];
+class Component extends DCLogic {
+  renderVals() { return { templates: TPL }; }
+}
+</script>
+</body>
+</html>
