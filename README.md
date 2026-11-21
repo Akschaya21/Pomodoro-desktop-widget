@@ -25,8 +25,8 @@ Designed as a clean, minimal **glass** widget, with 9 templates inspired by mode
 Requirements: macOS 13 Ventura or later, plus Apple's command line tools (`xcode-select --install`, or a full Xcode install).
 
 ```bash
-git clone https://github.com/Akschaya21/Pomodoraaa.git
-cd Pomodoraaa
+git clone https://github.com/Akschaya21/Pomodoro-desktop-widget.git
+cd Pomodoro-desktop-widget
 ./scripts/install.sh
 ```
 
