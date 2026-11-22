@@ -4,6 +4,10 @@ A small, floating pomodoro widget for macOS. It stays on top of every app and ev
 
 Designed as a clean, minimal **glass** widget, with 12 templates inspired by modern widget sets.
 
+[![Pomodoraaa demo: click to watch the video](media/demo-poster.jpg)](media/pomodoraaa-demo.mp4)
+
+▶ **[Watch the 24-second demo](media/pomodoraaa-demo.mp4)** (with sound).
+
 ## Features
 
 - **Floats above everything.** The widget never steals focus from what you're working on. Drag it anywhere; it remembers where you left it.
