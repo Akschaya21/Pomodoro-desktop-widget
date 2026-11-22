@@ -1,4 +1,4 @@
-# Pomodoraaa
+# Minimalistic-Pomodoro-widget
 
 A small, floating pomodoro widget for macOS. It stays on top of every app and every Space (full-screen apps too), you can drag it anywhere, and it plays built-in focus music right inside the app.
 
