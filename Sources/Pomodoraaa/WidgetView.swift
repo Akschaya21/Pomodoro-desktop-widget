@@ -33,24 +33,31 @@ struct WidgetRootView: View {
             .padding(24) // room for the shadow
             .fixedSize()
             .background(
+                // Report the content size so the window can grow/shrink to fit (panels open downward).
                 GeometryReader { geo in
-                    Color.clear.preference(key: SizeKey.self, value: geo.size)
+                    Color.clear
+                        .onAppear { onSizeChange(geo.size) }
+                        .onChange(of: geo.size) { size in onSizeChange(size) }
                 }
             )
-            .onPreferenceChange(SizeKey.self) { size in onSizeChange(size) }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .environment(\.colorScheme, look.t.isLight ? .light : .dark)
     }
 
     @ViewBuilder
     private var content: some View {
-        if prefs.compact {
+        if prefs.iconMode {
+            ClockIconView(timer: timer, look: look)
+                .modifier(WindowDrag(tapCount: 1, onDoubleClick: { prefs.iconMode = false }, onDragEnd: onMoved))
+        } else if prefs.compact {
             PillView(timer: timer, look: look)
                 .modifier(WindowDrag(onDoubleClick: { prefs.compact = false }, onDragEnd: onMoved))
         } else {
             VStack(alignment: .leading, spacing: 10) {
                 WidgetCard(timer: timer, music: music, look: look, panel: panel,
-                           onClose: onClose, onPanel: toggle)
+                           onClose: onClose,
+                           onMinimize: { panel = .none; prefs.iconMode = true },
+                           onPanel: toggle)
                     .modifier(WindowDrag(onDoubleClick: { panel = .none; prefs.compact = true }, onDragEnd: onMoved))
 
                 switch panel {
@@ -69,10 +76,6 @@ struct WidgetRootView: View {
 
     private func toggle(_ p: OpenPanel) {
         panel = (panel == p) ? .none : p
-        if panel == .music {
-            // Let the link field take typing.
-            FloatingPanel.shared?.makeKey()
-        }
     }
 }
 
@@ -84,6 +87,7 @@ struct WidgetCard: View {
     let look: Look
     let panel: OpenPanel
     var onClose: () -> Void
+    var onMinimize: () -> Void
     var onPanel: (OpenPanel) -> Void
 
     private var t: WidgetTemplate { look.t }
@@ -113,14 +117,16 @@ struct WidgetCard: View {
     }
 
     private var header: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 6) {
             CircleIconButton(system: "xmark", size: 22, iconSize: 9, bg: t.button, fg: t.text,
                              help: "Close — keeps running in the menu bar", action: onClose)
+            CircleIconButton(system: "minus", size: 22, iconSize: 9, bg: t.button, fg: t.text,
+                             help: "Minimise to a clock icon", action: onMinimize)
             Image(systemName: timer.mode.isBreak ? "cup.and.saucer.fill" : "flame.fill")
                 .font(.system(size: 13, weight: .semibold, design: .default))
                 .foregroundStyle(look.accent)
             Text(modeTitle)
-                .font(.system(size: 15, weight: .semibold, design: .default))
+                .font(.system(size: 14, weight: .semibold, design: .default))
                 .lineLimit(1)
             Spacer(minLength: 8)
             optionButton("timer", .time, help: "Edit time")
@@ -131,26 +137,21 @@ struct WidgetCard: View {
 
     private func optionButton(_ symbol: String, _ target: OpenPanel, help: String) -> some View {
         let on = panel == target
-        return CircleIconButton(system: symbol, size: 34, iconSize: 15,
+        return CircleIconButton(system: symbol, size: 30, iconSize: 14,
                                 bg: on ? look.accent : t.button, fg: on ? look.onAccent : t.text,
                                 help: help) { onPanel(target) }
     }
 
     private var timeFont: Font {
         t.monospaced
-            ? Font.system(size: 70, weight: .regular, design: .monospaced)
+            ? Font.system(size: 56, weight: .regular, design: .monospaced)
             : Font.system(size: 60, weight: t.timeWeight, design: .default)
     }
 
     private var timeRow: some View {
         HStack(alignment: .center) {
-            Text(timer.timeString)
-                .font(timeFont)
-                .monospacedDigit()
-                .kerning(-1)
+            TickerText(text: timer.timeString, font: timeFont, kerning: -1)
                 .foregroundStyle(timer.isRunning ? t.text : t.text.opacity(0.72))
-                .lineLimit(1)
-                .fixedSize()
             Spacer(minLength: 8)
             CircleIconButton(system: "forward.end.fill", size: 38, iconSize: 13, bg: t.button, fg: t.text,
                              help: "Skip to next session") { timer.skip() }
@@ -181,7 +182,7 @@ struct WidgetCard: View {
                 EqualizerBars(color: look.accent)
                 Text(station.name)
                     .font(.system(size: 12, weight: .semibold, design: .default))
-                Text("· \(station.source.label)")
+                Text("· \(station.detail)")
                     .font(.system(size: 12, weight: .regular, design: .default))
                     .foregroundStyle(t.secondary)
                 Spacer(minLength: 0)
@@ -240,12 +241,10 @@ struct PillView: View {
         let dot = t.isGlass ? (timer.mode.isBreak ? Templates.breakMint : Color(hex: 0xFF5A1F)) : look.accent
         HStack(spacing: 10) {
             Circle().fill(dot).frame(width: 8, height: 8)
-            Text(timer.timeString)
-                .font(t.monospaced
-                      ? Font.system(size: 24, weight: .regular, design: .monospaced)
-                      : Font.system(size: 20, weight: .semibold, design: .default))
-                .monospacedDigit()
-                .fixedSize()
+            TickerText(text: timer.timeString,
+                       font: t.monospaced
+                           ? Font.system(size: 24, weight: .regular, design: .monospaced)
+                           : Font.system(size: 20, weight: .semibold, design: .default))
             Spacer(minLength: 4)
             CircleIconButton(system: timer.isRunning ? "pause.fill" : "play.fill", size: 32, iconSize: 12,
                              bg: look.accent, fg: look.onAccent,

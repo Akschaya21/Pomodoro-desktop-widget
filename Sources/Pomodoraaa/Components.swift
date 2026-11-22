@@ -66,6 +66,29 @@ struct TemplateBackground: View {
                                    startPoint: .top, endPoint: .bottom),
                     lineWidth: 1)
             }
+        case .glow(let base, let blobs, let rim):
+            GeometryReader { geo in
+                let side = max(geo.size.width, geo.size.height)
+                ZStack {
+                    shape.fill(base)
+                    ForEach(Array(blobs.enumerated()), id: \.offset) { _, blob in
+                        Circle()
+                            .fill(RadialGradient(colors: [blob.color, blob.color.opacity(0)],
+                                                 center: .center, startRadius: 0, endRadius: side * blob.radius))
+                            .frame(width: side * blob.radius * 2, height: side * blob.radius * 2)
+                            .position(x: geo.size.width * blob.x, y: geo.size.height * blob.y)
+                    }
+                    // Soft bright inner edge: the "pillow" bulge from the references.
+                    shape.strokeBorder(rim.opacity(0.7), lineWidth: max(4, radius * 0.35))
+                        .blur(radius: max(3, radius * 0.3))
+                    shape.strokeBorder(
+                        LinearGradient(colors: [.white.opacity(0.75), .white.opacity(0.1), .white.opacity(0.35)],
+                                       startPoint: .top, endPoint: .bottom),
+                        lineWidth: 1)
+                }
+                .compositingGroup()
+                .clipShape(shape)
+            }
         case .solid(let color):
             shape.fill(color)
         case .gradient(let top, let bottom):
@@ -201,6 +224,7 @@ struct PanelCard<Content: View>: View {
 
 /// Drag the floating window from anywhere on a view; double-click to run an action.
 struct WindowDrag: ViewModifier {
+    var tapCount: Int = 2
     var onDoubleClick: () -> Void
     var onDragEnd: () -> Void
     @State private var start: (mouse: CGPoint, origin: CGPoint)?
@@ -222,11 +246,107 @@ struct WindowDrag: ViewModifier {
                         onDragEnd()
                     }
             )
-            .onTapGesture(count: 2, perform: onDoubleClick)
+            .onTapGesture(count: tapCount, perform: onDoubleClick)
     }
 }
 
-struct SizeKey: PreferenceKey {
-    static let defaultValue: CGSize = .zero
-    static func reduce(value: inout CGSize, nextValue: () -> CGSize) { value = nextValue() }
+// MARK: Ticker
+
+/// Text whose characters roll like a ticker when they change (each digit slides in from above
+/// as the countdown ticks down). Characters that don't change stay still.
+struct TickerText: View {
+    let text: String
+    let font: Font
+    var kerning: CGFloat = 0
+    /// true: new characters drop in from the top (counting down); false: rise from the bottom.
+    var down: Bool = true
+
+    var body: some View {
+        HStack(spacing: 0) {
+            ForEach(Array(text.enumerated()), id: \.offset) { _, ch in
+                TickerChar(char: ch, font: font, kerning: kerning, down: down)
+            }
+        }
+        .fixedSize()
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(text)
+    }
+}
+
+private struct TickerChar: View {
+    let char: Character
+    let font: Font
+    let kerning: CGFloat
+    let down: Bool
+
+    var body: some View {
+        ZStack {
+            Text(String(char))
+                .font(font)
+                .monospacedDigit()
+                .kerning(kerning)
+                .id(char)
+                .transition(.asymmetric(
+                    insertion: .move(edge: down ? .top : .bottom).combined(with: .opacity),
+                    removal: .move(edge: down ? .bottom : .top).combined(with: .opacity)))
+        }
+        .mask(
+            LinearGradient(stops: [.init(color: .clear, location: 0),
+                                   .init(color: .black, location: 0.18),
+                                   .init(color: .black, location: 0.82),
+                                   .init(color: .clear, location: 1)],
+                           startPoint: .top, endPoint: .bottom)
+        )
+        .animation(.spring(response: 0.42, dampingFraction: 0.78), value: char)
+    }
+}
+
+// MARK: Clock icon
+
+/// The widget minimised to a small round clock: a progress ring, twelve ticks
+/// and a hand that sweeps round as the session runs.
+struct ClockIconView: View {
+    @ObservedObject var timer: TimerModel
+    let look: Look
+
+    var body: some View {
+        let t = look.t
+        let size: CGFloat = 72
+        ZStack {
+            TemplateBackground(template: t, radius: size / 2, glassTint: look.glassTint, onBreak: look.onBreak)
+            Circle().strokeBorder(t.border, lineWidth: 1)
+
+            // Hour ticks.
+            ForEach(0..<12, id: \.self) { i in
+                Capsule()
+                    .fill(t.secondary.opacity(i % 3 == 0 ? 0.9 : 0.45))
+                    .frame(width: i % 3 == 0 ? 2 : 1.5, height: i % 3 == 0 ? 6 : 4)
+                    .offset(y: -size / 2 + 10)
+                    .rotationEffect(.degrees(Double(i) * 30))
+            }
+
+            // Progress ring.
+            Circle()
+                .trim(from: 0, to: max(0.001, timer.progress))
+                .stroke(look.accent, style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                .rotationEffect(.degrees(-90))
+                .padding(4)
+                .animation(.linear(duration: 0.25), value: timer.progress)
+
+            // Hand.
+            Capsule()
+                .fill(t.text)
+                .frame(width: 2.5, height: size / 2 - 18)
+                .offset(y: -(size / 2 - 18) / 2)
+                .rotationEffect(.degrees(360 * timer.progress))
+                .animation(.spring(response: 0.5, dampingFraction: 0.7), value: timer.progress)
+            Circle().fill(look.accent).frame(width: 7, height: 7)
+            Circle().fill(t.text).frame(width: 3, height: 3)
+        }
+        .frame(width: size, height: size)
+        .contentShape(Circle())
+        .shadow(color: .black.opacity(0.3), radius: 14, x: 0, y: 8)
+        .opacity(timer.isRunning ? 1 : 0.85)
+        .help("\(timer.mode.label) · \(timer.timeString) — click to expand")
+    }
 }

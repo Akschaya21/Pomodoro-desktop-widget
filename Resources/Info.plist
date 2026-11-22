@@ -30,7 +30,5 @@
     <true/>
     <key>NSHighResolutionCapable</key>
     <true/>
-    <key>NSAppleEventsUsageDescription</key>
-    <string>Pomodoraaa controls the Spotify app so your focus playlist plays and pauses with the timer.</string>
 </dict>
 </plist>

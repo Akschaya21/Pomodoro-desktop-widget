@@ -72,9 +72,7 @@ struct StepperRow: View {
             Spacer()
             HStack(spacing: 2) {
                 stepButton("minus", help: "Decrease \(label)", action: dec)
-                Text(value)
-                    .font(.system(size: 14, weight: .semibold, design: .default))
-                    .monospacedDigit()
+                TickerText(text: value, font: .system(size: 14, weight: .semibold, design: .default))
                     .frame(minWidth: 54)
                 stepButton("plus", help: "Increase \(label)", action: inc)
             }
@@ -102,43 +100,17 @@ struct MusicPanel: View {
     @ObservedObject var music: MusicPlayer
     let look: Look
     let onDone: () -> Void
-    @State private var link = ""
 
     private var t: WidgetTemplate { look.t }
 
-    private var placeholder: String {
-        music.source == .youtube ? "music.youtube.com/playlist?list=…" : "open.spotify.com/playlist/…"
-    }
-
-    private var listTitle: String {
-        music.recent.contains(where: { $0.source == music.source }) ? "Your links & quick picks" : "Quick picks"
-    }
-
-    private var footnote: String {
-        music.source == .spotify
-            ? "Plays through the Spotify app on this Mac. Music follows the timer: it pauses when you pause."
-            : "Plays YouTube / YouTube Music links right inside the widget. Music follows the timer."
-    }
-
     var body: some View {
         PanelCard(title: "Focus music", look: look, onDone: onDone) {
-            sourcePicker
-
-            VStack(alignment: .leading, spacing: 6) {
-                Text("Paste a playlist, album or track link")
-                    .font(.system(size: 12, weight: .regular, design: .default))
-                    .foregroundStyle(t.secondary)
-                HStack(spacing: 6) {
-                    TextField(placeholder, text: $link)
-                        .textFieldStyle(.plain)
-                        .font(.system(size: 13, weight: .regular, design: .default))
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 9)
-                        .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(t.button))
-                        .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).strokeBorder(t.border, lineWidth: 1))
-                        .onSubmit(submit)
-                    Button("Play", action: submit)
-                        .buttonStyle(ChipStyle(bg: look.accent, fg: look.onAccent))
+            VStack(spacing: 2) {
+                ForEach(MusicPlayer.stations) { station in
+                    StationRow(station: station,
+                               active: music.isCurrent(station),
+                               playing: music.isCurrent(station) && music.isPlaying,
+                               look: look) { music.tap(station) }
                 }
             }
 
@@ -147,19 +119,6 @@ struct MusicPanel: View {
                     .font(.system(size: 11, weight: .medium, design: .default))
                     .foregroundStyle(t.secondary)
                     .fixedSize(horizontal: false, vertical: true)
-            }
-
-            Text(listTitle)
-                .font(.system(size: 12, weight: .regular, design: .default))
-                .foregroundStyle(t.secondary)
-
-            VStack(spacing: 2) {
-                ForEach(music.picksForSource) { station in
-                    StationRow(station: station,
-                               active: music.isCurrent(station),
-                               playing: music.isCurrent(station) && music.isPlaying,
-                               look: look) { music.tap(station) }
-                }
             }
 
             HStack(spacing: 10) {
@@ -177,40 +136,11 @@ struct MusicPanel: View {
             .toggleStyle(.switch)
             .tint(look.t.isGlass ? .green : look.accent)
 
-            Text(footnote)
+            Text("Made live inside Pomodoraaa: no internet or account needed. Music follows the timer and pauses when you pause.")
                 .font(.system(size: 11, weight: .regular, design: .default))
                 .foregroundStyle(t.secondary)
                 .fixedSize(horizontal: false, vertical: true)
         }
-    }
-
-    private var sourcePicker: some View {
-        HStack(spacing: 0) {
-            ForEach(MusicSource.allCases) { source in
-                let selected = music.source == source
-                Button {
-                    music.source = source
-                    music.message = nil
-                } label: {
-                    Text(source.label)
-                        .font(.system(size: 13, weight: .semibold, design: .default))
-                        .foregroundStyle(selected ? look.onAccent : t.text)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 7)
-                        .background(RoundedRectangle(cornerRadius: 11, style: .continuous)
-                            .fill(selected ? look.accent : Color.clear))
-                        .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-            }
-        }
-        .padding(3)
-        .background(RoundedRectangle(cornerRadius: 14, style: .continuous).fill(t.button))
-    }
-
-    private func submit() {
-        music.play(link: link)
-        if music.message == nil { link = "" }
     }
 }
 
@@ -223,7 +153,12 @@ struct StationRow: View {
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 8) {
+            HStack(spacing: 10) {
+                Image(systemName: station.symbol)
+                    .font(.system(size: 13, weight: .semibold, design: .default))
+                    .foregroundStyle(active ? look.onAccent : look.t.text)
+                    .frame(width: 30, height: 30)
+                    .background(Circle().fill(active ? look.accent : look.t.button))
                 VStack(alignment: .leading, spacing: 1) {
                     Text(station.name).font(.system(size: 13, weight: .semibold, design: .default))
                     Text(station.detail)
@@ -237,8 +172,8 @@ struct StationRow: View {
                     .font(.system(size: 11, weight: .bold, design: .default))
                     .foregroundStyle(look.t.secondary)
             }
-            .padding(.horizontal, 10)
-            .padding(.vertical, 8)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 6)
             .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(active ? look.t.button : Color.clear))
             .contentShape(Rectangle())
         }

@@ -28,13 +28,26 @@ final class FloatingPanel: NSPanel {
     override var canBecomeKey: Bool { true }
     override var canBecomeMain: Bool { false }
 
-    /// Resize to the SwiftUI content while keeping the top-left corner pinned,
-    /// so panels open downward and the widget never jumps.
+    /// Resize to the SwiftUI content with the top edge pinned, so panels open downward.
+    /// Horizontally the widget stays anchored to the side of the screen it's on: on the right half
+    /// its right edge stays put, on the left half its left edge does. So minimising to the pill or
+    /// clock icon (and expanding again) happens in place instead of jumping sideways.
     func fit(contentSize size: CGSize) {
         guard size.width > 1, size.height > 1 else { return }
         let f = frame
         if abs(f.width - size.width) < 0.5 && abs(f.height - size.height) < 0.5 { return }
-        setFrame(NSRect(x: f.minX, y: f.maxY - size.height, width: size.width, height: size.height), display: true)
+        let vf = (screen ?? NSScreen.main)?.visibleFrame
+        let anchorRight = vf.map { f.midX > $0.midX } ?? false
+        var rect = NSRect(x: anchorRight ? f.maxX - size.width : f.minX,
+                          y: f.maxY - size.height, width: size.width, height: size.height)
+        if let vf {
+            // If a tall panel would run off the bottom of the screen, slide the widget up so it stays visible.
+            if rect.minY < vf.minY { rect.origin.y = min(vf.minY, vf.maxY - rect.height) }
+            // Keep it within the screen sideways too.
+            if rect.maxX > vf.maxX { rect.origin.x = vf.maxX - rect.width }
+            if rect.minX < vf.minX { rect.origin.x = vf.minX }
+        }
+        setFrame(rect, display: true)
     }
 
     // MARK: Position memory

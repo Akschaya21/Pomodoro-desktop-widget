@@ -62,12 +62,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         container.wantsLayer = true
         container.layer?.backgroundColor = NSColor.clear.cgColor
 
-        // Invisible web view that plays YouTube audio, tucked behind the card.
-        let web = music.webView
-        web.frame = NSRect(x: 40, y: 230 - 24 - 230, width: 230, height: 230)
-        web.autoresizingMask = [.maxXMargin, .minYMargin]
-        container.addSubview(web)
-
         let host = NSHostingView(rootView: root)
         host.sizingOptions = []
         host.frame = container.bounds
@@ -160,6 +154,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         compact.state = prefs.compact ? .on : .off
         menu.addItem(compact)
 
+        let icon = item("Clock icon", #selector(toggleIconMode))
+        icon.state = prefs.iconMode ? .on : .off
+        menu.addItem(icon)
+
         menu.addItem(item("Move widget to top-right", #selector(resetPosition)))
 
         let login = item("Launch at login", #selector(toggleLaunchAtLogin))
@@ -185,7 +183,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     @objc private func skip() { timer.skip() }
     @objc private func resetTimer() { timer.stop() }
     @objc private func toggleMusic() { music.togglePlayPause() }
-    @objc private func toggleCompact() { prefs.compact.toggle() }
+    @objc private func toggleCompact() { prefs.iconMode = false; prefs.compact.toggle() }
+    @objc private func toggleIconMode() { prefs.iconMode.toggle() }
 
     @objc private func resetPosition() {
         panel.moveToDefaultSpot()
