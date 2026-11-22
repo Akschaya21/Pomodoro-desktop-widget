@@ -97,7 +97,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     // MARK: Menu bar
 
     private func buildStatusItem() {
+        // New menu-bar items are added at the far left of the right-hand group. On a crowded
+        // menu bar with a notch that spot is hidden under the notch, so the timer seemed to vanish
+        // once the widget was closed. Seed a saved position next to the clock the first time;
+        // after that macOS remembers wherever the user ⌘-drags it.
+        let name = "PomodoraaaTimer"
+        let positionKey = "NSStatusItem Preferred Position \(name)"
+        if UserDefaults.standard.object(forKey: positionKey) == nil {
+            UserDefaults.standard.set(160.0, forKey: positionKey)
+        }
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+        statusItem.autosaveName = name
+        statusItem.behavior = [] // can't be dragged off the menu bar by accident
         if let button = statusItem.button {
             let image = NSImage(systemSymbolName: "timer", accessibilityDescription: "Pomodoraaa")
             image?.isTemplate = true
